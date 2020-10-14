@@ -1,14 +1,34 @@
+#include <Adafruit_NeoPixel.h>
+
+#define NEO_PIXEL_PIN 12
+#define NEO_PIXEL_LENGTH 100
+
+Adafruit_NeoPixel pixels(NEO_PIXEL_LENGTH, NEO_PIXEL_PIN, NEO_GRB + NEO_KHZ800);
+
 void setup() {
-    pinMode(LED_BUILTIN, OUTPUT);
+    pixels.begin();
 }
 
 void loop() {
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(200);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(200);
-    digitalWrite(LED_BUILTIN, HIGH);
-    delay(200);
-    digitalWrite(LED_BUILTIN, LOW);
-    delay(700);
+    pixels.clear();
+
+    for (int i = 0; i < NEO_PIXEL_LENGTH; i++) {
+        pixels.setPixelColor(i, pixels.Color(150, 0, 0));
+    }
+
+    pixels.show();
+    pixels.clear();
+
+    for (int i = 0; i < NEO_PIXEL_LENGTH; i++) {
+        pixels.setPixelColor(i, pixels.Color(0, 150, 0));
+    }
+
+    pixels.show();
+    pixels.clear();
+
+    for (int i = 0; i < NEO_PIXEL_LENGTH; i++) {
+        pixels.setPixelColor(i, pixels.Color(0, 0, 150));
+    }
+
+    pixels.show();
 }
