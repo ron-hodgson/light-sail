@@ -1,7 +1,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define NEO_PIXEL_PIN 12
-#define NEO_PIXEL_LENGTH 100
+#define NEO_PIXEL_LENGTH 101
 
 Adafruit_NeoPixel pixels(NEO_PIXEL_LENGTH, NEO_PIXEL_PIN, NEO_GRB + NEO_KHZ800);
 
@@ -17,6 +17,9 @@ void loop() {
     }
 
     pixels.show();
+
+    delay(500);
+
     pixels.clear();
 
     for (int i = 0; i < NEO_PIXEL_LENGTH; i++) {
@@ -24,6 +27,9 @@ void loop() {
     }
 
     pixels.show();
+
+    delay(500);
+
     pixels.clear();
 
     for (int i = 0; i < NEO_PIXEL_LENGTH; i++) {
@@ -31,4 +37,6 @@ void loop() {
     }
 
     pixels.show();
+
+    delay(500);
 }
