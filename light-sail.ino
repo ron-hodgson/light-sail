@@ -2,38 +2,27 @@
 
 #define NEO_PIXEL_PIN 12
 #define NEO_PIXEL_LENGTH 100
-#define COLOR_LEVEL_MAX 151
-#define COLOR_LEVEL_STEP 10
 
 Adafruit_NeoPixel pixels(NEO_PIXEL_LENGTH, NEO_PIXEL_PIN, NEO_RGB + NEO_KHZ800);
 
 void setup() {
     Serial.begin(115200);
     pixels.begin();
+    pixels.show();
 }
 
-int red = 0;
-int green = 0xff;
-int blue = 0;
+uint16_t hue;
 
 void loop() {
-    int old_red = red;
-    red = green;
-    green = blue;
-    blue = old_red;
+    uint32_t rgb = pixels.gamma32(pixels.ColorHSV(hue, 255, 168));
+    hue += 100;
 
-    Serial.print("Red = "); Serial.print(red, HEX);
-    Serial.print(", Green = "); Serial.print(green, HEX);
-    Serial.print(", Blue = "); Serial.println(blue, HEX);
+    Serial.print("Red = "); Serial.print(rgb >> 16 & 0xff, HEX);
+    Serial.print(", Green = "); Serial.print(rgb >> 8 & 0xff, HEX);
+    Serial.print(", Blue = "); Serial.println(rgb >> 0 & 0xff, HEX);
 
-    pixels.clear();
-    for (int c = 0; c < COLOR_LEVEL_MAX; c += COLOR_LEVEL_STEP ) {
-        for (int i = 0; i < NEO_PIXEL_LENGTH; i++) {
-            pixels.setPixelColor(i, pixels.Color(c & red, c & green, c & blue));
-        }
-        pixels.show();
-        delay(100);
-    }
+    pixels.fill(rgb);
+    pixels.show();
 
-    delay(500);
+    delay(50);
 }
