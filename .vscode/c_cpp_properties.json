@@ -4,14 +4,19 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/home/ron/.arduino15/packages/esp32/hardware/esp32/1.0.4/cores/esp32",
-                "/home/ron/.arduino15/packages/esp32/hardware/esp32/1.0.4/libraries/**"
+                "/home/ron/.arduino15/packages/esp32/hardware/esp32/1.0.4/**",
+                // "/home/ron/.arduino15/packages/esp32/hardware/esp32/1.0.4/cores/esp32",
+                // "/home/ron/.arduino15/packages/esp32/hardware/esp32/1.0.4/libraries/**",
+                "/home/ron/Arduino/libraries/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/cpp",
             "cStandard": "gnu18",
             "cppStandard": "c++17",
-            "intelliSenseMode": "gcc-x64"
+            "intelliSenseMode": "gcc-x64",
+            "forcedInclude": [
+                "/home/ron/.arduino15/packages/esp32/hardware/esp32/1.0.4/cores/esp32/Arduino.h"
+            ]
         }
     ],
     "version": 4
