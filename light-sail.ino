@@ -1,4 +1,5 @@
 #include <Adafruit_NeoPixel.h>
+#include "frames.h"
 
 #define NEO_PIXEL_PIN 12
 #define NEO_PIXEL_LENGTH 100
