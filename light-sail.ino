@@ -2,7 +2,6 @@
 #include "frames.h"
 
 #define NEO_PIXEL_PIN 12
-#define NEO_PIXEL_LENGTH 100
 
 Adafruit_NeoPixel pixels(NEO_PIXEL_LENGTH, NEO_PIXEL_PIN, NEO_RGB + NEO_KHZ800);
 
@@ -12,18 +11,19 @@ void setup() {
     pixels.show();
 }
 
-uint16_t hue;
+unsigned long frame;
+unsigned long nextFrameShow;
 
 void loop() {
-    uint32_t rgb = pixels.gamma32(pixels.ColorHSV(hue, 255, 168));
-    hue += 100;
+    if (millis() < nextFrameShow) {
+        return;
+    }
+    nextFrameShow = millis() + FRAMES_MILLIS;
+    
+    Serial.print("Sending frame #"); Serial.print(frame + 1);
 
-    Serial.print("Red = "); Serial.print(rgb >> 16 & 0xff, HEX);
-    Serial.print(", Green = "); Serial.print(rgb >> 8 & 0xff, HEX);
-    Serial.print(", Blue = "); Serial.println(rgb >> 0 & 0xff, HEX);
-
-    pixels.fill(rgb);
+    for (int i = 0; i < FRAMES_PIXELS; i++) {
+        pixels.setPixelColor(i, pixels.gamma32(frames[frame * FRAMES_PIXELS + i]));
+    }
     pixels.show();
-
-    delay(50);
 }
