@@ -20,12 +20,12 @@ void loop() {
     }
     nextFrameShow = millis() + FRAMES_MILLIS;
 
-    Serial.print("Sending frame #"); Serial.print(frame + 1);
+    Serial.print("Sending frame #"); Serial.println(frame + 1);
 
     for (int i = 0; i < FRAMES_PIXELS; i++) {
         pixels.setPixelColor(i, frames[frame * FRAMES_PIXELS + i]);
     }
     pixels.show();
 
-    frame += 1 % FRAMES_LENGTH;
+    frame = (frame + 1) % FRAMES_LENGTH;
 }

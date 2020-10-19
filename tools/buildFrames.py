@@ -43,7 +43,7 @@ f.writelines([
 # populate the frames
 
 totalFrames = 0
-framesPerSecond = 24
+framesPerSecond = 12
 cycleSeconds = 3
 framesPerCycle = framesPerSecond * cycleSeconds
 pixelsPerFrame = 100
@@ -77,6 +77,6 @@ f.writelines([
     "\n",
     "#define FRAMES_LENGTH {0}\n".format(totalFrames),
     "#define FRAMES_PIXELS {0}\n".format(pixelsPerFrame),
-    "#define FRAMES_MILLIS {0:.0f}\n".format(framesPerSecond / 60 * 1000)
+    "#define FRAMES_MILLIS {0:.0f}\n".format(1 / framesPerSecond * 1000)
 ])
 f.close()
