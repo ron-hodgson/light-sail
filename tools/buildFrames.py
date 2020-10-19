@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+import math
 
 def writePixelRow(f, pixels):
     f.write("    ")
@@ -41,16 +42,41 @@ f.writelines([
 
 # populate the frames
 
-writePixelFrameRows(f, 1, range(1,101))
-writePixelFrameRows(f, 2, range(101,201))
+totalFrames = 0
+framesPerSecond = 24
+cycleSeconds = 3
+framesPerCycle = framesPerSecond * cycleSeconds
+pixelsPerFrame = 100
+
+for colorCycle in range(1, 8):
+    for frameInCycle in range(framesPerCycle):
+        totalFrames += 1
+
+        intensity = math.floor(math.sin(math.pi * frameInCycle / framesPerCycle) * 255)
+        colorValue = 0
+
+        if colorCycle & 1:
+            colorValue |= intensity << 0
+
+        if colorCycle & 2:
+            colorValue |= intensity << 8
+
+        if colorCycle & 4:
+            colorValue |= intensity << 16
+
+        pixels = []
+        for i in range(pixelsPerFrame):
+            pixels.append(colorValue)
+
+        writePixelFrameRows(f, totalFrames, pixels)
 
 # Write out the footer and close the file
 
 f.writelines([
     "};\n",
     "\n",
-    "#define FRAMES_LENGTH {0}\n".format(2),
-    "#define FRAMES_PIXELS {0}\n".format(100),
-    "#define FRAMES_MILLIS {0:.0f}\n".format(24 / 60 * 1000)
+    "#define FRAMES_LENGTH {0}\n".format(totalFrames),
+    "#define FRAMES_PIXELS {0}\n".format(pixelsPerFrame),
+    "#define FRAMES_MILLIS {0:.0f}\n".format(framesPerSecond / 60 * 1000)
 ])
 f.close()

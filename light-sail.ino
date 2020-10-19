@@ -3,7 +3,7 @@
 
 #define NEO_PIXEL_PIN 12
 
-Adafruit_NeoPixel pixels(NEO_PIXEL_LENGTH, NEO_PIXEL_PIN, NEO_RGB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(FRAMES_PIXELS, NEO_PIXEL_PIN, NEO_RGB + NEO_KHZ800);
 
 void setup() {
     Serial.begin(115200);
@@ -19,11 +19,13 @@ void loop() {
         return;
     }
     nextFrameShow = millis() + FRAMES_MILLIS;
-    
+
     Serial.print("Sending frame #"); Serial.print(frame + 1);
 
     for (int i = 0; i < FRAMES_PIXELS; i++) {
-        pixels.setPixelColor(i, pixels.gamma32(frames[frame * FRAMES_PIXELS + i]));
+        pixels.setPixelColor(i, frames[frame * FRAMES_PIXELS + i]);
     }
     pixels.show();
+
+    frame += 1 % FRAMES_LENGTH;
 }
