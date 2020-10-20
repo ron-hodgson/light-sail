@@ -2,6 +2,7 @@
 
 import sys
 import math
+import pixelUtils
 
 def writePixelRow(f, pixels):
     f.write("    ")
@@ -48,27 +49,39 @@ cycleSeconds = 3
 framesPerCycle = framesPerSecond * cycleSeconds
 pixelsPerFrame = 100
 
-for colorCycle in range(1, 8):
-    for frameInCycle in range(framesPerCycle):
-        totalFrames += 1
+# populate rainbow first frame
 
-        intensity = math.floor(math.sin(math.pi * frameInCycle / framesPerCycle) * 255)
-        colorValue = 0
+frame = []
+for i in range(pixelsPerFrame):
+    frame.append(pixelUtils.rgb(0, 0, 0))
+    
+pixelsInSection = pixelsPerFrame // 7
+for i in range(pixelsInSection):
+    intensity = math.floor(math.sin(math.pi * (i + 1) / (pixelsInSection + 1)) * 255)
+    intensity = pixelUtils.gamma8(intensity)
+    frame[i + pixelsInSection * 0] = pixelUtils.rgb(0, 0, intensity)
+    frame[i + pixelsInSection * 1] = pixelUtils.rgb(0, intensity, 0)
+    frame[i + pixelsInSection * 2] = pixelUtils.rgb(0, intensity, intensity)
+    frame[i + pixelsInSection * 3] = pixelUtils.rgb(intensity, 0, 0)
+    frame[i + pixelsInSection * 4] = pixelUtils.rgb(intensity, 0, intensity)
+    frame[i + pixelsInSection * 5] = pixelUtils.rgb(intensity, intensity, 0)
+    frame[i + pixelsInSection * 6] = pixelUtils.rgb(intensity, intensity, intensity)
 
-        if colorCycle & 1:
-            colorValue |= intensity << 0
+totalFrames += 1
+writePixelFrameRows(f, totalFrames, frame)
 
-        if colorCycle & 2:
-            colorValue |= intensity << 8
+# remaining frames rotate through all pixels in frame
 
-        if colorCycle & 4:
-            colorValue |= intensity << 16
+for i in range(pixelsPerFrame - 1):
+    t = frame[0]
 
-        pixels = []
-        for i in range(pixelsPerFrame):
-            pixels.append(colorValue)
+    for j in range(pixelsPerFrame - 1):
+        frame[j] = frame[j + 1]
 
-        writePixelFrameRows(f, totalFrames, pixels)
+    frame[pixelsPerFrame - 1] = t
+
+    totalFrames += 1
+    writePixelFrameRows(f, totalFrames, frame)
 
 # Write out the footer and close the file
 
